@@ -12,7 +12,7 @@
 I created a new user using AWS console putting in mind best security practices such as enabling Multifactor authentication and also generating an access key to be used by gitpod environment
 
 ![Image of User I Created](assets/aws-iam-admin-user.png) 
-![Image of Security Credentials](aws-iam-best-practices.png) 
+![Image of Security Credentials](assets/aws-iam-best-practices.png) 
 
 ### Install and Verify AWS CLI 
 
