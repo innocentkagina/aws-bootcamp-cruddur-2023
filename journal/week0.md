@@ -11,8 +11,8 @@
 ### Create Admin User & Generate AWS Credentials
 I created a new user using AWS console putting in mind best security practices such as enabling Multifactor authentication and also generating an access key to be used by gitpod environment
 
-![Image of User I Created](assets/budget-alarm.png) 
-![Image of Security Credentials](assets/budget-alarm.png) 
+![Image of User I Created](assets/aws-iam-admin-user.png) 
+![Image of Security Credentials](aws-iam-best-practices.png) 
 
 ### Install and Verify AWS CLI 
 
@@ -20,7 +20,7 @@ I was able to successfully use Gitpod and its features to install AWS CLI.
 
 I followed  instructions on the [AWS CLI Install Documentation Page](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 
-I also managed to set up variables in Gitpod to have avoid exporting AWS variables everytime the Workspace is loaded (assets/proof-of-aws-cli.png)
+I also managed to set up variables in Gitpod to have avoid exporting AWS variables everytime the Workspace is loaded. ![Image of Gitpod Variables(gp-aws-variables.png) 
 
 I attempted to run the command by typing in `aws` but I recieved an error
 
@@ -42,11 +42,11 @@ aws budgets create-budget \
     --budget file://aws/json/budget.json \
     --notifications-with-subscribers file://aws/json/notifications-with-subscribers.json
  ``` 
-![Image of The Budget I Created](assets/budget-alarm.png) 
+![Image of The Budget I Created](assets/budget-alert.png) 
 
 ### Create an Alarm
 I created an CloudWatch alarm using AWS_CLI based a json file with trigger if charges exceed $1 using following code
 ```
 aws cloudwatch put-metric-alarm --cli-input-json file://aws/json/alarm-config.json
 ``` 
-![Image of The Cloudwatch Alarm I Created](assets/budget-alarm.png) 
+![Image of The Cloudwatch Alarm I Created](assets/billing-alarm.png) 
