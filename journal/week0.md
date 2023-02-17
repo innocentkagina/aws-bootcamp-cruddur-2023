@@ -2,6 +2,12 @@
 
 ## Required Homework/Tasks
 
+### Recreate Conceptual Architectural Deisgn
+
+![Cruddur Conceptual Design](assets/conceptual-architecture-recreation-diagram.png)
+
+[Lucid Charts Share Link](https://lucid.app/lucidchart/faf54612-690b-4a01-8aad-590283ca0dce/edit?invitationId=inv_73cd73ad-fad8-4b56-8505-aff9df49c307)
+
 ### Recreate Logical Architectural Deisgn
 
 ![Cruddur Logical Design](assets/logical-architecture-recreation-diagram.png)
@@ -25,9 +31,7 @@ I also managed to set up variables in Gitpod to have avoid exporting AWS variabl
 I attempted to run the command by typing in `aws` but I recieved an error
 
 ```
-gitpod /workspace/aws-bootcamp-cruddur-2023/journal (main) $ aws
-'aws' is not recognized as an internal or external command,
-operable program or batch file.
+bash: aws: command not found.
 ```
 I was able to resolve the error by closing command prompt, and opening it again.
 
