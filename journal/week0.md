@@ -54,3 +54,10 @@ I created an CloudWatch alarm using AWS_CLI based a json file with trigger if ch
 aws cloudwatch put-metric-alarm --cli-input-json file://aws/json/alarm-config.json
 ``` 
 ![Image of The Cloudwatch Alarm I Created](assets/billing-alarm.png) 
+
+### Destroy your root account credentials, Set MFA, IAM role
+I created an administrator account named "innocentkagina" from my Root account and activated MFA  for both Root and Administrator as shown by the image in the journal folder.
+![Image of Administrator Account Created](assets/aws-iam-mfa.png) 
+
+I created an IAM role named "ec2-administrator" with only EC2 admin full privileges as shown by the image in the journal folder.
+![Image of The IAM role](assets/aws-iam-role.png) 
