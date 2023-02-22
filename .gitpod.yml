@@ -16,7 +16,7 @@ tasks:
       sudo apt install -y postgresql-client-13 libpq-dev
   - name: npm
     init: |
-      cd /$THEIA_WORKSPACE_ROOT/frontend-react-js
+      cd /$THEIA_WORKSPACE_ROOT/$FRONTEND
       npm install
       cd $THEIA_WORKSPACE_ROOT
 vscode:
