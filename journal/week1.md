@@ -11,7 +11,7 @@ npm start
 
 backend 
 
-<!--- I had to create a virtual environment in linux for me to be able to run Flask without tampering current settings --->
+# "I had to create a virtual environment in linux for me to be able to run Flask without tampering current settings"
 
 ```
 pip install -r requirements.txt
@@ -26,18 +26,18 @@ flask run
 
 1b- I created a frontend end point for notifications page
 
-[frontend-react-js/src/pages/NotificationPage.js](frontend-react-js/src/pages/NotificationPage.js)
+[frontend-react-js/src/pages/NotificationPage.js](https://github.com/innocentkagina/aws-bootcamp-cruddur-2023/blob/97d27fc3a3915d3b5d5d500e3b0075451a077b8e/frontend-react-js/src/pages/NotificationPage.js)
 
 
 2-I created a Dockerfile for frontend and backend
 
 docker for frontend
 
-[frontend-react-js/Dockerfile](frontend-react-js/Dockerfile)
+[frontend-react-js/Dockerfile](https://github.com/innocentkagina/aws-bootcamp-cruddur-2023/blob/97d27fc3a3915d3b5d5d500e3b0075451a077b8e/frontend-react-js/Dockerfile)
 
 docker for backend
 
-[backend-flask/Dockerfile](backend-flask/Dockerfile)
+[backend-flask/Dockerfile](https://github.com/innocentkagina/aws-bootcamp-cruddur-2023/blob/97d27fc3a3915d3b5d5d500e3b0075451a077b8e/backend-flask/Dockerfile)
 
 
 3-I also built image and ran containers of apps separate
@@ -59,7 +59,7 @@ docker run --rm -d  aws-bootcamp-cruddur-2023-backend-flask:latest
 4-I created a docker- compose file to combine two images created as well as added postgres and dynamoDB service
 docker-compose file
 
-[docker-compose.yml](docker-compose.yml)
+[docker-compose.yml](https://github.com/innocentkagina/aws-bootcamp-cruddur-2023/blob/97d27fc3a3915d3b5d5d500e3b0075451a077b8e/docker-compose.yml)
 
 5-I ran the docker-compose file to ensure both apps run and can talk to each other
 ```
@@ -109,7 +109,7 @@ curl  0.0.0.0:49153
 
 2- Implement a healthcheck in the V3 Docker compose file
 Created two Health Checks,one for Backend  and Frontend
-
+[Docker-Compose File](https://github.com/innocentkagina/aws-bootcamp-cruddur-2023/blob/97d27fc3a3915d3b5d5d500e3b0075451a077b8e/docker-compose.yml)
 Frontend Healthcheck
 ```
 healthcheck:
