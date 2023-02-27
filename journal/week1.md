@@ -73,7 +73,7 @@ volumes:
       - ./backend-flask:/backend-flask
 ```
 
-##HomeWork Assignment
+### HomeWork Assignment
 
 1- Launch an EC2 instance that has docker installed, and pull a container to demonstrate you can run your own docker processes. 
 I created a new EC2 instance and connected into it using Aws inbuilt cli
