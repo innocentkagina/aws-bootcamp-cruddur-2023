@@ -10,9 +10,9 @@ npm start
 ![Image of The Budget I Created](assets/frontend-run.png) 
 
 backend 
-{::comment}
-I had to create a virtual environment in linux for me to be able to run Flask without tampering current settings
-{:/comment}
+
+<!--- I had to create a virtual environment in linux for me to be able to run Flask without tampering current settings --->
+
 ```
 pip install -r requirements.txt
 flask run
@@ -22,7 +22,7 @@ flask run
 
 1a-I created a backend end point for notifications page
 
-[backend-flask/app.py](backend-flask/app.py)
+[backend-flask/app.py](https://github.com/innocentkagina/aws-bootcamp-cruddur-2023/blob/97d27fc3a3915d3b5d5d500e3b0075451a077b8e/backend-flask/app.py)
 
 1b- I created a frontend end point for notifications page
 
