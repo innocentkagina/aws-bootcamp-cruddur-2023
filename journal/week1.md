@@ -108,8 +108,11 @@ curl  0.0.0.0:49153
 ![Image of The Budget I Created](assets/curl-ec2.png) 
 
 2- Implement a healthcheck in the V3 Docker compose file
+
 Created two Health Checks,one for Backend  and Frontend
+
 [Docker-Compose File](https://github.com/innocentkagina/aws-bootcamp-cruddur-2023/blob/97d27fc3a3915d3b5d5d500e3b0075451a077b8e/docker-compose.yml)
+
 Frontend Healthcheck
 ```
 healthcheck:
