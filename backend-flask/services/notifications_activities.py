@@ -5,7 +5,8 @@ from opentelemetry import trace
 
 tracer = trace.get_tracer("notifications.activities")
 class NotificationsActivities:
-  def run():
+  def run(logger):
+    logger.info("NotificationsActivities")
     with tracer.start_as_current_span("mock-data-notifications"):
       now = datetime.now(timezone.utc).astimezone()
       results = [{
