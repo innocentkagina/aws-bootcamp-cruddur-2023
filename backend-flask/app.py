@@ -89,7 +89,7 @@ def data_messages(handle):
   user_sender_handle = 'andrewbrown'
   user_receiver_handle = request.args.get('user_reciever_handle')
 
-  model = Messages.run(user_sender_handle=user_sender_handle, user_receiver_handle=user_receiver_handle)
+  model = Messages.run(user_sender_handle=user_sender_handle, user_receiver_handle=user_receiver_handle,logger=LOGGER)
   if model['errors'] is not None:
     return model['errors'], 422
   else:
