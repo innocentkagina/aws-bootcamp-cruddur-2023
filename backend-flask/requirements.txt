@@ -13,3 +13,5 @@ watchtower
 
 blinker
 rollbar
+
+opentelemetry-exporter-otlp-proto-grpc

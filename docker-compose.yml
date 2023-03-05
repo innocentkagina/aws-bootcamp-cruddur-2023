@@ -23,9 +23,13 @@ services:
       AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
       AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
       ROLLBAR_ACCESS_TOKEN: "${ROLLBAR_ACCESS_TOKEN}"
+      # OTEL_COLLECTOR_OTLP_ENDPOINT_GRPC: "https://4317-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+      # OTEL_COLLECTOR_OTLP_ENDPOINT_HTTP: "https://4318-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
     build: ./backend-flask
     ports:
       - "4567:4567"
+    depends_on:
+      - otel-collector
     volumes:
       - ./backend-flask:/backend-flask    
     healthcheck:
@@ -37,6 +41,9 @@ services:
   frontend-react-js:
     environment:
       REACT_APP_BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+      HONEYCOMB_API_KEY: "${HONEYCOMB_API_KEY}"
+      HONEYCOMB_API_ENDPOINT: "https://4318-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+
     build: ./frontend-react-js
     ports:
       - "3000:3000"
@@ -59,8 +66,6 @@ services:
     volumes: 
       - db:/var/lib/postgresql/data
   dynamodb-local:
-      # https://stackoverflow.com/questions/67533058/persist-local-dynamodb-data-in-volumes-lack-permission-unable-to-open-databa
-      # We needed to add user:root to get this working.
       user: root
       command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
       image: "amazon/dynamodb-local:latest"
@@ -70,15 +75,25 @@ services:
       volumes:
         - "./docker/dynamodb:/home/dynamodblocal/data"
       working_dir: /home/dynamodblocal
-  
+  # Collector
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib
+    command: [--config=/etc/otel-collector-config.yaml]
+    volumes:
+      - ./otel/otel-collector-config.yml:/etc/otel-collector-config.yaml
+    ports:
+      # - 1888:1888 # pprof extension
+      # - 8888:8888 # Prometheus metrics exposed by the collector
+      # - 8889:8889 # Prometheus exporter metrics
+      # - 13133:13133 # health_check extension
+      - 4318:4318 # OTLP http receiver
+      # - 4317:4317 #OTLP grpc
+      # - 55679:55679 # zpages extension   
 
 volumes:
   db:
     driver: local
   
-
-# the name flag is a hack to change the default prepend folder
-# name when outputting the image names
 networks: 
   internal-network:
     driver: bridge

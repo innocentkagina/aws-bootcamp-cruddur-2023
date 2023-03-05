@@ -1,11 +1,11 @@
 from datetime import datetime, timedelta, timezone
 class Messages:
-  def run(user_sender_handle, user_receiver_handle,logger):
+  def run(user_sender_handle, user_receiver_handle):
     model = {
       'errors': None,
       'data': None
     }
-    logger.info("Messages")
+    # logger.info("Messages")
     now = datetime.now(timezone.utc).astimezone()
 
     results = [

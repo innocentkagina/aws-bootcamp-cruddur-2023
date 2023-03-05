@@ -2,12 +2,11 @@ from datetime import datetime, timedelta, timezone
 
 # Adding Honeycomb Tracer
 from opentelemetry import trace
-
 tracer = trace.get_tracer("notifications.activities")
 class NotificationsActivities:
-  def run(logger):
-    logger.info("NotificationsActivities")
-    with tracer.start_as_current_span("mock-data-notifications"):
+  def run():
+    # logger.info("NotificationsActivities")
+    with tracer.start_as_current_span("mock-activities-notifications"):
       now = datetime.now(timezone.utc).astimezone()
       results = [{
         'uuid': '68f126b0-1ceb-4a33-88be-d90fa7109eee',
@@ -48,4 +47,8 @@ class NotificationsActivities:
         'replies': []
       }
       ]
+      span = trace.get_current_span()
+      for item in results:
+        for key, value in item.items():
+           span.set_attribute(key, value)
     return results

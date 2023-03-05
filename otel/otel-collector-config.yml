@@ -1,0 +1,54 @@
+processors:
+  # resourcedetection/docker:
+  #   detectors: [env, docker]
+  batch:
+    send_batch_size: 10000
+    timeout: 10s
+
+# receivers configure how data gets into the Collector.
+receivers:
+  # hostmetrics:
+  #   collection_interval: 10s
+  #   scrapers:
+  #     cpu:
+  #     disk:
+  #     filesystem:
+  #     load:
+  #     memory:
+  #     network:
+  #     paging:
+  otlp:
+    protocols:
+      http:
+        # cors:
+        #   allowed_origins:
+        #     - "[*]"
+      # grpc:
+
+    
+exporters:
+  otlp/metrics:
+    endpoint: "https://api.honeycomb.io:443"
+    headers:
+      "x-honeycomb-team": "API-KEY"
+      "x-honeycomb-dataset": "backend-flask"
+  logging:
+    loglevel: debug
+# extensions:
+#   health_check:
+# receivers, processors, and exporters that are not used in pipelines are silently ignored.
+service:
+  # extensions: [health_check]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp/metrics,logging]
+    # metrics:
+    #   receivers: [otlp, hostmetrics]
+    #   processors: [batch, resourcedetection/docker]
+    #   exporters: [otlp/metrics]
+    # logs:
+    #   receivers: [otlp]
+    #   processors: [batch,resourcedetection/docker]
+    #   exporters: [otlp/metrics]
