@@ -21,32 +21,33 @@ import rollbar.contrib.flask
 from flask import got_request_exception
 
 # AWS X-Ray Libraries
-# from aws_xray_sdk.core import xray_recorder
-# from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
+from aws_xray_sdk.core import xray_recorder
+from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
 
-# xray_url = os.getenv("AWS_XRAY_URL")
-# xray_recorder.configure(service='backend-flask', dynamic_naming=xray_url)
+xray_url = os.getenv("AWS_XRAY_URL")
+xray_recorder.configure(service='backend-flask', dynamic_naming=xray_url)
 
 # CloudWatch Libraries
-# import watchtower
-# import logging
-# from time import strftime
+import watchtower
+import logging
+from time import strftime
+
 # Configuring Logger to Use CloudWatch
-# LOGGER = logging.getLogger(__name__)
-# LOGGER.setLevel(logging.DEBUG)
-# console_handler = logging.StreamHandler()
-# cw_handler = watchtower.CloudWatchLogHandler(log_group='cruddur')
-# LOGGER.addHandler(console_handler)
-# LOGGER.addHandler(cw_handler)
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.DEBUG)
+console_handler = logging.StreamHandler()
+cw_handler = watchtower.CloudWatchLogHandler(log_group='cruddur')
+LOGGER.addHandler(console_handler)
+LOGGER.addHandler(cw_handler)
 # LOGGER.info("some message")
 
 # HoneyComb Libraries
-# from opentelemetry import trace
-# from opentelemetry.instrumentation.flask import FlaskInstrumentor
-# from opentelemetry.instrumentation.requests import RequestsInstrumentor
-# from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
-# from opentelemetry.sdk.trace import TracerProvider
-# from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry import trace
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry.instrumentation.requests import RequestsInstrumentor
+from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
 
 #HoneyComb to OTEL Collector
 from opentelemetry import trace
@@ -78,31 +79,31 @@ tracer = trace.get_tracer(__name__)
 # tracer = trace.get_tracer(__name__)
 
 # Rollbar
-# rollbar_access_token = os.getenv('ROLLBAR_ACCESS_TOKEN')
-# @app.before_first_request
-# def init_rollbar():
-#     """init rollbar module"""
-#     rollbar.init(
-#         # access token
-#         rollbar_access_token,
-#         # environment name
-#         'production',
-#         # server root directory, makes tracebacks prettier
-#         root=os.path.dirname(os.path.realpath(__file__)),
-#         # flask already sets up logging
-#         allow_logging_basic_config=False)
+rollbar_access_token = os.getenv('ROLLBAR_ACCESS_TOKEN')
+@app.before_first_request
+def init_rollbar():
+    """init rollbar module"""
+    rollbar.init(
+        # access token
+        rollbar_access_token,
+        # environment name
+        'production',
+        # server root directory, makes tracebacks prettier
+        root=os.path.dirname(os.path.realpath(__file__)),
+        # flask already sets up logging
+        allow_logging_basic_config=False)
 
-#     # send exceptions from `app` to rollbar, using flask's signal system.
-#     got_request_exception.connect(rollbar.contrib.flask.report_exception, app)
+    # send exceptions from `app` to rollbar, using flask's signal system.
+    got_request_exception.connect(rollbar.contrib.flask.report_exception, app)
 
 app = Flask(__name__)
 FlaskInstrumentor().instrument_app(app)
 
 
 # Initialize automatic instrumentation with Flask X-ray
-# XRayMiddleware(app, xray_recorder)
-# FlaskInstrumentor().instrument_app(app)
-# RequestsInstrumentor().instrument()
+XRayMiddleware(app, xray_recorder)
+FlaskInstrumentor().instrument_app(app)
+RequestsInstrumentor().instrument()
 
 frontend = os.getenv('FRONTEND_URL')
 backend = os.getenv('BACKEND_URL')
@@ -116,11 +117,11 @@ cors = CORS(
 )
 
 # CloudWatch
-# @app.after_request
-# def after_request(response):
-#     timestamp = strftime('[%Y-%b-%d %H:%M]')
-#     LOGGER.error('%s %s %s %s %s %s', timestamp, request.remote_addr, request.method, request.scheme, request.full_path, response.status)
-#     return response
+@app.after_request
+def after_request(response):
+    timestamp = strftime('[%Y-%b-%d %H:%M]')
+    LOGGER.error('%s %s %s %s %s %s', timestamp, request.remote_addr, request.method, request.scheme, request.full_path, response.status)
+    return response
 
 #Rollbar
 @app.route('/rollbar/test')
@@ -142,7 +143,7 @@ def data_messages(handle):
   user_sender_handle = 'andrewbrown'
   user_receiver_handle = request.args.get('user_reciever_handle')
 
-  model = Messages.run(user_sender_handle=user_sender_handle, user_receiver_handle=user_receiver_handle)
+  model = Messages.run(user_sender_handle=user_sender_handle, user_receiver_handle=user_receiver_handle,logger=LOGGER)
   if model['errors'] is not None:
     return model['errors'], 422
   else:
@@ -169,7 +170,7 @@ def data_home():
   return data, 200
 
 @app.route("/api/activities/notifications", methods=['GET'])
-def notifications():
+def notifications(logger=LOGGER):
   data = NotificationsActivities.run()
   return data, 200
 

@@ -4,8 +4,8 @@ from datetime import datetime, timedelta, timezone
 from opentelemetry import trace
 tracer = trace.get_tracer("notifications.activities")
 class NotificationsActivities:
-  def run():
-    # logger.info("NotificationsActivities")
+  def run(logger):
+    logger.info("NotificationsActivities")
     with tracer.start_as_current_span("mock-activities-notifications"):
       now = datetime.now(timezone.utc).astimezone()
       results = [{
