@@ -69,7 +69,7 @@ I also created a sampling group
 ![Image of Span Attributes](assets/sampling-group.png) 
 
 I added xray libraries to backend
-[App file] (https://github.com/innocentkagina/aws-bootcamp-cruddur-2023/blob/e4df33a9bbbabc84e58b0412ca58acea2d53a698/backend-flask/app.py)
+[App file](https://github.com/innocentkagina/aws-bootcamp-cruddur-2023/blob/e4df33a9bbbabc84e58b0412ca58acea2d53a698/backend-flask/app.py)
 
 ```
 # AWS X-Ray Libraries
