@@ -78,6 +78,8 @@ tracer = trace.get_tracer(__name__)
 # trace.set_tracer_provider(provider)
 # tracer = trace.get_tracer(__name__)
 
+app = Flask(__name__)
+FlaskInstrumentor().instrument_app(app)
 # Rollbar
 rollbar_access_token = os.getenv('ROLLBAR_ACCESS_TOKEN')
 @app.before_first_request
@@ -96,8 +98,7 @@ def init_rollbar():
     # send exceptions from `app` to rollbar, using flask's signal system.
     got_request_exception.connect(rollbar.contrib.flask.report_exception, app)
 
-app = Flask(__name__)
-FlaskInstrumentor().instrument_app(app)
+
 
 
 # Initialize automatic instrumentation with Flask X-ray
