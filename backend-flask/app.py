@@ -14,6 +14,9 @@ from services.create_message import *
 from services.show_activity import *
 from services.notifications_activities import *
 
+# CognitoJwtToken
+from lib.cognito_jwt_token import CognitoJwtToken, extract_access_token, TokenVerifyError
+
 
 # Rollbar Libraries
 import rollbar
@@ -67,7 +70,7 @@ resource = Resource(attributes={
 
 provider = TracerProvider(resource=resource)
 # processor = BatchSpanProcessor(OTLPSpanExporter(endpoint="https://4317-innocentkag-awsbootcamp-ce2nnaqx0xi.ws-eu89.gitpod.io"))
-processor = BatchSpanProcessor(OTLPSpanExporter(endpoint="https://4318-innocentkag-awsbootcamp-ce2nnaqx0xi.ws-eu89.gitpod.io/v1/traces"))
+processor = BatchSpanProcessor(OTLPSpanExporter(endpoint=os.getenv("OTEL_COLLECTOR_OTLP_ENDPOINT_HTTP")))
 provider.add_span_processor(processor)
 trace.set_tracer_provider(provider)
 tracer = trace.get_tracer(__name__)
@@ -79,6 +82,14 @@ tracer = trace.get_tracer(__name__)
 # tracer = trace.get_tracer(__name__)
 
 app = Flask(__name__)
+
+# CognitoJwtToken
+cognito_jwt_token = CognitoJwtToken(
+  user_pool_id=os.getenv("AWS_COGNITO_USER_POOL_ID"), 
+  user_pool_client_id=os.getenv("AWS_COGNITO_USER_POOL_CLIENT_ID"),
+  region=os.getenv("AWS_DEFAULT_REGION")
+)
+
 FlaskInstrumentor().instrument_app(app)
 # Rollbar
 rollbar_access_token = os.getenv('ROLLBAR_ACCESS_TOKEN')
@@ -109,11 +120,12 @@ RequestsInstrumentor().instrument()
 frontend = os.getenv('FRONTEND_URL')
 backend = os.getenv('BACKEND_URL')
 origins = [frontend, backend]
+
 cors = CORS(
   app, 
   resources={r"/api/*": {"origins": origins}},
-  expose_headers="location,link",
-  allow_headers="content-type,if-modified-since",
+  headers=['Content-Type', 'Authorization'], 
+  expose_headers='Authorization',
   methods="OPTIONS,GET,HEAD,POST"
 )
 
@@ -129,6 +141,11 @@ def after_request(response):
 def rollbar_test():
     rollbar.report_message('Hello World!', 'warning')
     return "Hello World!"
+
+@app.route("/health", methods=['GET'])
+def health_check():
+  data = 'OK'
+  return data, 200
 
 @app.route("/api/message_groups", methods=['GET'])
 def data_message_groups():
@@ -167,12 +184,24 @@ def data_create_message():
 
 @app.route("/api/activities/home", methods=['GET'])
 def data_home():
-  data = HomeActivities.run()
+  access_token = extract_access_token(request.headers)
+  try:
+    claims = cognito_jwt_token.verify(access_token)
+    # authenicatied request
+    # app.logger.debug("authenicated")
+    # app.logger.debug(claims)
+    # app.logger.debug(claims['username'])
+    data = HomeActivities.run(cognito_user_id=claims['username'])
+  except TokenVerifyError as e:
+    # unauthenicatied request
+    # app.logger.debug(e)
+    # app.logger.debug("unauthenicated")
+    data = HomeActivities.run()
   return data, 200
 
 @app.route("/api/activities/notifications", methods=['GET'])
-def notifications(logger=LOGGER):
-  data = NotificationsActivities.run()
+def notifications():
+  data = NotificationsActivities.run(logger=LOGGER)
   return data, 200
 
 @app.route("/api/activities/@<string:handle>", methods=['GET'])
