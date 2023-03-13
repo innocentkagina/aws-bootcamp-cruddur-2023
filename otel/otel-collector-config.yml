@@ -28,7 +28,7 @@ receivers:
     
 exporters:
   otlp/metrics:
-    endpoint: "https://api.honeycomb.io:443"
+    endpoint: "api.honeycomb.io:443"
     headers:
       "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
       "x-honeycomb-dataset": "backend-flask"
