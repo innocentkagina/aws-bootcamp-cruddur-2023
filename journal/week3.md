@@ -2,9 +2,13 @@
 ### Required Work
 1-Set Up Amazon Cognito User Pool
 
-I managed to set up a cognito pool
+I managed to set up a cognito pool and application ID
 
 ![AWs cognito Pool](assets/cognito-pool.png) 
+
+App ID
+![AWs cognito Pool](assets/cognito-app-id.png) 
+
 
 2-Install and configure Amplify client-side library for Amazon Congito
 
