@@ -17,3 +17,6 @@ rollbar
 opentelemetry-exporter-otlp-proto-grpc
 
 Flask-AWSCognito
+
+psycopg[binary]
+psycopg[pool]
