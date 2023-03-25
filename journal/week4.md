@@ -70,6 +70,7 @@ Lambda Function Post Code
 We ran some SQL commands to ensure database connection to AWS RDS is working
 
 Select Users
+
 ![Users](assets/select-users-rds.png)
 
 Select Activities
@@ -83,7 +84,7 @@ Json Helpers
 [Json Helpers](https://github.com/innocentkagina/aws-bootcamp-cruddur-2023/blob/318c5315074cb8a7cc945794f05edcef7307f52f/backend-flask/lib/db.py)
 
 Crud Inputs
-![New Posts](assets/create-activities-rds.png)
+![New Posts](assets/create-activities.png)
 
 9- Implement a postgres client for python using a connection pool
 
