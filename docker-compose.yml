@@ -12,8 +12,9 @@ services:
         - 2000:2000/udp
   backend-flask:
     environment:
-      CONNECTION_URL: "${PROD_CONNECTION_URL}"
-      #CONNECTION_URL: "postgresql://postgres:password@db:5432/cruddur"
+      # CONNECTION_URL: "${PROD_CONNECTION_URL}"
+      CONNECTION_URL: "postgresql://postgres:password@db:5432/cruddur"
+      #AWS_ENDPOINT_URL: "http://dynamodb-local:8000"
       FRONTEND_URL: "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
       BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
       OTEL_EXPORTER_OTLP_ENDPOINT: "https://api.honeycomb.io"
@@ -27,7 +28,7 @@ services:
       ROLLBAR_ACCESS_TOKEN: "${ROLLBAR_ACCESS_TOKEN}"
       # OTEL_COLLECTOR_OTLP_ENDPOINT_GRPC: "https://4317-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
       OTEL_COLLECTOR_OTLP_ENDPOINT_HTTP: "https://4318-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
-      AWS_COGNITO_USER_POOL_ID: "us-east-1_rfPF93vfO"
+      AWS_COGNITO_USER_POOL_ID: "${AWS_COGNITO_USER_POOL_ID}"
       AWS_COGNITO_USER_POOL_CLIENT_ID: "62a68fsoq0s2pbq7toc8a36jtv" 
     build: ./backend-flask
     ports:
