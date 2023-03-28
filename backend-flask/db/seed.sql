@@ -1,7 +1,7 @@
 -- this file was manually created
 INSERT INTO public.users (display_name, email, handle, cognito_user_id)
 VALUES
-  ('Inno DODO',,'kaginno@gmail.com','kaginno','MOCK'),
+  ('Inno DODO','kaginno@gmail.com','kaginno','MOCK'),
   ('Deus DODO','deus.b@gmail.com','deus.b' ,'MOCK'),
   ('Londo Mollari', 'lmollari@centari.com','londo','MOCK');
 
@@ -11,4 +11,4 @@ VALUES
     (SELECT uuid from public.users WHERE users.handle = 'kaginno' LIMIT 1),
     'This was imported as seed data!',
     current_timestamp + interval '10 day'
-  )
+  );

@@ -32,8 +32,6 @@ class Ddb:
     # query the table
     response = client.query(**query_params)
     items = response['Items']
-    
-
     results = []
     for item in items:
       last_sent_at = item['sk']['S']
@@ -45,6 +43,7 @@ class Ddb:
         'created_at': last_sent_at
       })
     return results
+    
   def list_messages(client,message_group_uuid):
     year = str(datetime.now().year)
     table_name = 'cruddur-messages'

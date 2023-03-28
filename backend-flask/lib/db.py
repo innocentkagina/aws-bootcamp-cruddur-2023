@@ -3,10 +3,6 @@ import os
 import re
 import sys
 from flask import current_app as app
-import logging
-
-logger = logging.getLogger("cruddur")
-
 
 class Db:
   def __init__(self):
@@ -29,7 +25,6 @@ class Db:
 
   def init_pool(self):
     connection_url = os.getenv("CONNECTION_URL")
-    logger.info(f"connecting to {connection_url}")
     self.pool = ConnectionPool(connection_url)
   # we want to commit data such as an insert
   # be sure to check for RETURNING in all uppercases
