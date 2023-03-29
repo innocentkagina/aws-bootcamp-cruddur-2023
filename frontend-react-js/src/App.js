@@ -9,6 +9,8 @@ import MessageGroupsPage from './pages/MessageGroupsPage';
 import MessageGroupPage from './pages/MessageGroupPage';
 import ConfirmationPage from './pages/ConfirmationPage';
 import NotificationPage from './pages/NotificationPage';
+import MessageGroupNewPage from './pages/MessageGroupNewPage';
+
 import React from 'react';
 import process from 'process';
 import { Amplify } from 'aws-amplify';
@@ -50,6 +52,10 @@ const router = createBrowserRouter([
   {
     path: "/messages",
     element: <MessageGroupsPage />
+  },
+  {
+    path: "/messages/new/:handle",
+    element: <MessageGroupNewPage />
   },
   {
     path: "/messages/:message_group_uuid",
