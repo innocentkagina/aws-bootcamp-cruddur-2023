@@ -62,7 +62,7 @@ Cognito User
 ![AWs cognito User](assets/cognito-user.png)
 
 Lambda Function Post Code
-[Post Function](https://github.com/innocentkagina/aws-bootcamp-cruddur-2023/blob/318c5315074cb8a7cc945794f05edcef7307f52f/backend-flask/lambdas/cruddur-post-confirmation.py)
+[Post Function](https://github.com/innocentkagina/aws-bootcamp-cruddur-2023/blob/318c5315074cb8a7cc945794f05edcef7307f52f/aws/lambdas/cruddur-post-confirmation.py)
 
 ![Post Confirmation Code](assets/post-confirmation.png)
 
