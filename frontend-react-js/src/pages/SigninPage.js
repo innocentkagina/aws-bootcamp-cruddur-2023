@@ -31,8 +31,7 @@ export default function SigninPage() {
     return false
   }
   
-// just before submit component
-{errors}
+
 
 
   if (errors){

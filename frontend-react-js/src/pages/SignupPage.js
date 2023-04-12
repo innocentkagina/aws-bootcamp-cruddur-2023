@@ -44,8 +44,7 @@ export default function SignupPage() {
     errors = <div className='errors'>{errors}</div>;
   }
   
-  //before submit component
-  {errors}
+  
 
   const name_onchange = (event) => {
     setName(event.target.value);

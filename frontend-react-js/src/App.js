@@ -14,6 +14,10 @@ import MessageGroupNewPage from './pages/MessageGroupNewPage';
 import React from 'react';
 import process from 'process';
 import { Amplify } from 'aws-amplify';
+import {
+  createBrowserRouter,
+  RouterProvider
+} from "react-router-dom";
 
 Amplify.configure({
   "AWS_PROJECT_REGION": process.env.REACT_APP_AWS_PROJECT_REGION,
@@ -31,10 +35,7 @@ Amplify.configure({
   }
 });
 
-import {
-  createBrowserRouter,
-  RouterProvider
-} from "react-router-dom";
+
 
 const router = createBrowserRouter([
   {
