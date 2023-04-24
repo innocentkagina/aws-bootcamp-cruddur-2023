@@ -10,61 +10,36 @@ services:
         - "xray -o -b xray-daemon:2000"
       ports:
         - 2000:2000/udp
+
+      networks:
+      - cruddur-net
   backend-flask:
-    environment:
-      CONNECTION_URL: "${PROD_CONNECTION_URL}"
-      # CONNECTION_URL: "postgresql://postgres:password@db:5432/cruddur"
-      # AWS_ENDPOINT_URL: "http://dynamodb-local:8000"
-      AWS_ENDPOINT_URL: "http://dynamodb.us-east-1.amazonaws.com"
-      FRONTEND_URL: "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
-      BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
-      OTEL_EXPORTER_OTLP_ENDPOINT: "https://api.honeycomb.io"
-      OTEL_EXPORTER_OTLP_HEADERS: "x-honeycomb-team=${HONEYCOMB_API_KEY}"
-      OTEL_SERVICE_NAME: "backend-flask"
-      AWS_XRAY_URL: "*4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}*"
-      AWS_XRAY_DAEMON_ADDRESS: "xray-daemon:2000"
-      AWS_DEFAULT_REGION: "${AWS_REGION}"
-      AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
-      AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
-      ROLLBAR_ACCESS_TOKEN: "${ROLLBAR_ACCESS_TOKEN}"
-      # OTEL_COLLECTOR_OTLP_ENDPOINT_GRPC: "https://4317-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
-      OTEL_COLLECTOR_OTLP_ENDPOINT_HTTP: "https://4318-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
-      AWS_COGNITO_USER_POOL_ID: "${AWS_COGNITO_USER_POOL_ID}"
-      AWS_COGNITO_USER_POOL_CLIENT_ID: "62a68fsoq0s2pbq7toc8a36jtv" 
+    env_file:
+        - .env.backend-flask
+      
     build: ./backend-flask
     ports:
       - "4567:4567"
     depends_on:
       - otel-collector
     volumes:
-      - ./backend-flask:/backend-flask    
-    healthcheck:
-      test: ["CMD-SHELL","curl -f localhost:4567/api/health && echo 'OK'"]
-      interval: 60s
-      retries: 5
-      start_period: 20s
-      timeout: 10s
+      - ./backend-flask:/backend-flask
+
+    networks:
+      - cruddur-net
   frontend-react-js:
-    environment:
-      REACT_APP_BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
-      HONEYCOMB_API_KEY: "${HONEYCOMB_API_KEY}"
-      HONEYCOMB_API_ENDPOINT: "https://4318-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
-      REACT_APP_AWS_PROJECT_REGION: "${AWS_REGION}"
-      REACT_APP_AWS_COGNITO_REGION: "${AWS_REGION}"
-      REACT_APP_AWS_USER_POOLS_ID: "us-east-1_rfPF93vfO"
-      REACT_APP_CLIENT_ID: "62a68fsoq0s2pbq7toc8a36jtv"
+    env_file:
+        - .env.frontend-react-js
+      
 
     build: ./frontend-react-js
     ports:
       - "3000:3000"
     volumes:
       - ./frontend-react-js:/frontend-react-js
-    healthcheck:
-      test: curl --fail localhost:3000/
-      interval: 60s
-      retries: 5
-      start_period: 20s
-      timeout: 10s
+
+    networks:
+      - cruddur-net
   db:
     image: postgres:13-alpine
     restart: always
@@ -75,6 +50,9 @@ services:
       - '5432:5432'
     volumes: 
       - db:/var/lib/postgresql/data
+
+    networks:
+      - cruddur-net
   dynamodb-local:
       user: root
       command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
@@ -85,6 +63,9 @@ services:
       volumes:
         - "./docker/dynamodb:/home/dynamodblocal/data"
       working_dir: /home/dynamodblocal
+
+      networks:
+      - cruddur-net
   # Collector
   otel-collector:
     image: otel/opentelemetry-collector
@@ -99,12 +80,13 @@ services:
       - 4318:4318 # OTLP http receiver
       # - 4317:4317 #OTLP grpc
       # - 55679:55679 # zpages extension   
-
+    networks:
+      - cruddur-net
+networks: 
+  cruddur-net:
+    driver: bridge
+    name: cruddur-net
 volumes:
   db:
     driver: local
   
-networks: 
-  internal-network:
-    driver: bridge
-    name: cruddur
