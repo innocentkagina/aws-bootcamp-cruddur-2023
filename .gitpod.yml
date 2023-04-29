@@ -11,6 +11,8 @@ tasks:
       unzip -o awscliv2.zip
       sudo ./aws/install
       cd $THEIA_WORKSPACE_ROOT
+    # command: |
+    #   ./bin/ecr/login  
 
   - name: postgres
     before: |
@@ -26,14 +28,16 @@ tasks:
     before: |
       cd /$THEIA_WORKSPACE_ROOT/frontend-react-js
       npm install
-      cd $THEIA_WORKSPACE_ROOT
-
+    command: |
+      source "$THEIA_WORKSPACE_ROOT/bin/frontend/generate-env"
+ 
   - name: flask
     before: |
       cd /$THEIA_WORKSPACE_ROOT/backend-flask
       pip install -r requirements.txt
-      cd $THEIA_WORKSPACE_ROOT
-  
+    command: |
+      source "$THEIA_WORKSPACE_ROOT/bin/backend/generate-env"
+      
   - name: fargate
     before: |
       curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb"

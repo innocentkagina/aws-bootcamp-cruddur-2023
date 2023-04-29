@@ -15,7 +15,7 @@ services:
       - cruddur-net
   backend-flask:
     env_file:
-        - .env.backend-flask
+        - backend-flask.env
       
     build: ./backend-flask
     ports:
@@ -29,8 +29,7 @@ services:
       - cruddur-net
   frontend-react-js:
     env_file:
-        - .env.frontend-react-js
-      
+        - frontend-react-js.env      
 
     build: ./frontend-react-js
     ports:
